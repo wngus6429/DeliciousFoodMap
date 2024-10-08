@@ -1,3 +1,4 @@
+import {NavigationContainer} from '@react-navigation/native';
 import React, {useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
@@ -11,6 +12,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import AuthHomeScreen from './src/screens/AuthHomeScreen';
 
 function App(): JSX.Element {
   const [name, setName] = useState('');
@@ -18,16 +20,9 @@ function App(): JSX.Element {
     setName(text); // RN에서는 e.target.value 대신 text로
   };
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.inputContainer}>
-        <Text>이름</Text>
-        <TextInput
-          style={styles.input}
-          value={name}
-          onChangeText={handleChangeInput}
-        />
-      </View>
-    </SafeAreaView>
+    <NavigationContainer>
+      <AuthHomeScreen></AuthHomeScreen>
+    </NavigationContainer>
   );
 }
 
