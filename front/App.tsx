@@ -13,6 +13,7 @@ import {
   View,
 } from 'react-native';
 import AuthHomeScreen from './src/screens/AuthHomeScreen';
+import AuthStackNavigator from './src/navigation/AuthStackNavigator';
 
 function App(): JSX.Element {
   const [name, setName] = useState('');
@@ -21,7 +22,7 @@ function App(): JSX.Element {
   };
   return (
     <NavigationContainer>
-      <AuthHomeScreen></AuthHomeScreen>
+      <AuthStackNavigator />
     </NavigationContainer>
   );
 }
