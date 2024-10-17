@@ -1,7 +1,2 @@
-const authNavigations = {
-  AUTHHOME: 'AuthHome',
-  LOGIN: 'Login',
-  SIGNUP: 'Signup',
-} as const;
-
-export {authNavigations};
+export * from './colors';
+export * from './navigations';
