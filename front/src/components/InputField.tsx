@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {ForwardedRef, forwardRef, useRef} from 'react';
 import {
   Button,
   Dimensions,
@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import {colors} from '../constants/colors';
+import {mergeRefs} from '../utils';
 
 interface InputFieldProps extends TextInputProps {
   disabled?: boolean;
@@ -19,42 +20,44 @@ interface InputFieldProps extends TextInputProps {
 
 const deviceHeight = Dimensions.get('screen').height;
 
-function InputField({
-  disabled = false,
-  error,
-  touched,
-  ...props
-}: InputFieldProps) {
-  console.log('에러', error);
-  const innerRef = useRef<TextInput | null>(null);
+const InputField = forwardRef(
+  (
+    {disabled = false, error, touched, ...props}: InputFieldProps,
+    ref?: ForwardedRef<TextInput>,
+  ) => {
+    console.log('에러', error);
+    const innerRef = useRef<TextInput | null>(null);
 
-  const handlePressInput = () => {
-    innerRef.current?.focus();
-  };
-  return (
-    <Pressable onPress={handlePressInput}>
-      <View
-        style={[
-          styles.container,
-          disabled && styles.disabled,
-          touched && Boolean(error) && styles.inputError,
-        ]}>
-        <TextInput
-          ref={innerRef}
-          editable={!disabled}
-          placeholderTextColor={colors.GRAY_500}
-          style={[styles.input, disabled && styles.disabled]}
-          autoCapitalize="none"
-          spellCheck={false}
-          autoCorrect={false}
-          {...props}
-        />
-        {/* onblur로 에러이면서 이미 터치된 적이 있는 경우만 */}
-        {touched && Boolean(error) && <Text style={styles.error}>{error}</Text>}
-      </View>
-    </Pressable>
-  );
-}
+    const handlePressInput = () => {
+      innerRef.current?.focus();
+    };
+    return (
+      <Pressable onPress={handlePressInput}>
+        <View
+          style={[
+            styles.container,
+            disabled && styles.disabled,
+            touched && Boolean(error) && styles.inputError,
+          ]}>
+          <TextInput
+            ref={ref ? mergeRefs(innerRef, ref) : innerRef}
+            editable={!disabled}
+            placeholderTextColor={colors.GRAY_500}
+            style={[styles.input, disabled && styles.disabled]}
+            autoCapitalize="none"
+            spellCheck={false}
+            autoCorrect={false}
+            {...props}
+          />
+          {/* onblur로 에러이면서 이미 터치된 적이 있는 경우만 */}
+          {touched && Boolean(error) && (
+            <Text style={styles.error}>{error}</Text>
+          )}
+        </View>
+      </Pressable>
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   container: {
