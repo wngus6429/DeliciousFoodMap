@@ -1,6 +1,6 @@
 import {Category, Profile} from '../types/domain';
 import {getEncryptStorage} from '../utils';
-import axiosInstance from './axios';
+import {axiosInstance} from './axios';
 
 type RequestUser = {
   email: string;
@@ -52,6 +52,7 @@ const getAccessToken = async (): Promise<ResponseToken> => {
 };
 
 const logout = async (): Promise<void> => {
+  console.log('로그아웃');
   await axiosInstance.post('/auth/logout');
 };
 

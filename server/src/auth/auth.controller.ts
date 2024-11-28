@@ -22,6 +22,7 @@ export class AuthController {
 
   @Post('/signup')
   signup(@Body(ValidationPipe) authDto: AuthDto) {
+    console.log('회원가입데이터', authDto);
     return this.authService.signup(authDto);
   }
 
@@ -51,6 +52,7 @@ export class AuthController {
   @Post('/logout')
   @UseGuards(AuthGuard())
   logout(@GetUser() user: User) {
+    console.log('백엔드 로그아웃 시도');
     return this.authService.deleteRefreshToken(user);
   }
 

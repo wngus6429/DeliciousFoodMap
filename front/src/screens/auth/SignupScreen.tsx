@@ -5,10 +5,12 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import InputField from '../../components/InputField';
 import CustomButton from '../../components/CustomButton';
 import {validateSignup} from '../../utils/validate';
+import useAuth from '../../hooks/queries/useAuth';
 
 function SignupScreen() {
   const passwordRef = useRef<TextInput | null>(null);
   const passwordConfirmRef = useRef<TextInput | null>(null);
+  const {signupMutation, loginMutation} = useAuth();
   const signup = useForm({
     initialValues: {
       email: '',
@@ -18,8 +20,18 @@ function SignupScreen() {
     validate: validateSignup,
   });
   const handleSubmit = () => {
-    console.log(signup.values);
+    console.log('회원가입데이터', signup.values);
+    const {email, password} = signup.values; // passwordConfirm은 사용하지 않음
+    signupMutation.mutate(
+      {email, password},
+      {
+        onSuccess: () => {
+          loginMutation.mutate({email, password});
+        },
+      },
+    );
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.inputContainer}>
