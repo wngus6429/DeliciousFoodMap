@@ -23,7 +23,9 @@ export class AuthController {
   @Post('/signup')
   signup(@Body(ValidationPipe) authDto: AuthDto) {
     console.log('회원가입데이터', authDto);
-    return this.authService.signup(authDto);
+    const res = this.authService.signup(authDto);
+    console.log('회원가입결과', res);
+    return res;
   }
 
   @Post('/signin')

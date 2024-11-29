@@ -33,7 +33,7 @@ export class AuthService {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const user = this.userRepository.create({
+    const user = await this.userRepository.create({
       email,
       password: hashedPassword,
       loginType: 'email',
