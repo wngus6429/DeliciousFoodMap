@@ -52,10 +52,11 @@ function useGetRefreshToken() {
   const {data, error, isSuccess, isError} = useQuery({
     queryKey: [queryKeys.AUTH, queryKeys.GET_ACCESS_TOKEN],
     queryFn: getAccessToken,
+    //  Access Token이 유효한 시간을 지정합니다. 이 시간이 지나면 데이터를 stale 상태로 간주
     staleTime: numbers.ACCESS_TOKEN_REFRESH_TIME,
-    refetchInterval: numbers.ACCESS_TOKEN_REFRESH_TIME,
-    refetchOnReconnect: true,
-    refetchIntervalInBackground: true,
+    refetchInterval: numbers.ACCESS_TOKEN_REFRESH_TIME, // 일정 주기마다 자동으로 Access Token을 재요청
+    refetchOnReconnect: true, // 네트워크 연결이 복구되었을 때 자동으로 데이터를 다시 요청합니다.
+    refetchIntervalInBackground: true, // 앱이 백그라운드에 있을 때도 주기적으로 토큰 갱신 요청
   });
 
   useEffect(() => {
